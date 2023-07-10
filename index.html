@@ -166,19 +166,20 @@
 ];
 
 
-             // Function to generate timetable
+
+        // Function to generate timetable
         function generateTimetable() {
             const tableBody = document.querySelector('#timetable tbody');
             tableBody.innerHTML = '';
 
             // Get the current date and time in AEST (Australian Eastern Standard Time)
             const currentDate = new Date();
-            const currentHour = (currentDate.getUTCHours() + 10) % 24; // Convert UTC hour to AEST hour
-            const currentDay = (currentDate.getUTCDay() + 1) % 7; // Convert UTC day to AEST day
+            const currentDay = (currentDate.getUTCDay() + 6) % 7; // Convert UTC day to AEST day
+            const currentHour = (currentDate.getHours() + 24 - 10) % 24; // Convert UTC hour to AEST hour
 
             // Determine the current week (Week A or Week B)
-            let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
-            if (currentDay === 1 && currentHour < 16) {
+            let currentWeek = 'Week A';
+            if (currentDay === 6 && currentHour >= 16) {
                 currentWeek = 'Week B';
             }
 
@@ -215,6 +216,8 @@
                 row.appendChild(noScheduleCell);
                 tableBody.appendChild(row);
             }
+        }
+
         }
 
         // Refresh the timetable every 1 minute
