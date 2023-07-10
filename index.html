@@ -167,7 +167,7 @@
 
 
 
-    // Function to generate timetable
+  // Function to generate timetable
 function generateTimetable() {
     const tableBody = document.querySelector('#timetable tbody');
     tableBody.innerHTML = '';
@@ -199,12 +199,20 @@ function generateTimetable() {
         row.appendChild(weekCell);
 
         const timeCell = document.createElement('td');
-        timetable.schedule.forEach(entry => {
-            const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
-            const entryElement = document.createElement('p');
-            entryElement.textContent = entryText;
-            timeCell.appendChild(entryElement);
-        });
+
+        if (timetable.schedule.length > 0) {
+            timetable.schedule.forEach(entry => {
+                const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
+                const entryElement = document.createElement('p');
+                entryElement.textContent = entryText;
+                timeCell.appendChild(entryElement);
+            });
+        } else {
+            const noScheduleElement = document.createElement('p');
+            noScheduleElement.textContent = 'No schedule for this day';
+            timeCell.appendChild(noScheduleElement);
+        }
+
         row.appendChild(timeCell);
 
         tableBody.appendChild(row);
