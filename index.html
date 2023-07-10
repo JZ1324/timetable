@@ -165,65 +165,91 @@
         ];
 
 
-      // Function to generate timetable
-function generateTimetable() {
-    const tableBody = document.querySelector('#timetable tbody');
-    tableBody.innerHTML = '';
+        // Function to generate timetable
+        function generateTimetable() {
+            const tableBody = document.querySelector('#timetable tbody');
+            tableBody.innerHTML = '';
 
-    // Get the current date and time in AEST (Australian Eastern Standard Time)
-    const options = { timeZone: 'Australia/Sydney' };
-    const currentDate = new Date().toLocaleString('en-AU', options);
-    const currentHour = new Date(currentDate).getHours();
-    const currentDay = new Date(currentDate).getDay();
+            // Get the current date and time in AEST (Australian Eastern Standard Time)
+            const options = { timeZone: 'Australia/Sydney' };
+            const currentDate = new Date().toLocaleString('en-AU', options);
+            const currentHour = new Date(currentDate).getHours();
+            const currentDay = new Date(currentDate).getDay();
 
-    // Determine the current week (Week A or Week B)
-    let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
+            // Determine the current week (Week A or Week B)
+            let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
 
-    if ((currentDay === 0 && currentHour >= 18) || currentDay === 1) {
-        currentWeek = 'Week B';
-    }
+            if ((currentDay === 0 && currentHour >= 18) || currentDay === 1) {
+                currentWeek = 'Week B';
+            }
 
-    // Determine the current day within the week
-    let currentDayOfWeek = (currentDay === 0 ? 7 : currentDay);
+            // Determine the current day within the week
+            let currentDayOfWeek = (currentDay === 0 ? 7 : currentDay);
 
-    if (currentDayOfWeek === 1 && currentWeek === 'Week B') {
-        const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
-        if (timetable) {
-            const row = document.createElement('tr');
+            if (currentDay === 0 || currentDay === 6) {
+                // Weekend (Sunday or Saturday)
+                const row = document.createElement('tr');
+                const noSchoolCell = document.createElement('td');
+                noSchoolCell.setAttribute('colspan', '3');
+                noSchoolCell.textContent = 'Yay, no school today!';
+                row.appendChild(noSchoolCell);
+                tableBody.appendChild(row);
+            } else {
+                const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
+                if (timetable) {
+                    const row = document.createElement('tr');
 
-            const dayCell = document.createElement('td');
-            dayCell.textContent = currentDayOfWeek;
-            row.appendChild(dayCell);
+                    const dayCell = document.createElement('td');
+                    dayCell.textContent = currentDayOfWeek;
+                    row.appendChild(dayCell);
 
-            const weekCell = document.createElement('td');
-            weekCell.textContent = currentWeek;
-            row.appendChild(weekCell);
+                    const weekCell = document.createElement('td');
+                    weekCell.textContent = currentWeek;
+                    row.appendChild(weekCell);
 
-            const timeCell = document.createElement('td');
+                    const timeCell = document.createElement('td');
 
-            // Insert your code to populate the timetable for Week B Day 1 here
-            // For example:
-            // timetable.schedule.forEach(entry => {
-            //     const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
-            //     const entryElement = document.createElement('p');
-            //     entryElement.textContent = entryText;
-            //     timeCell.appendChild(entryElement);
-            // });
+                    if (timetable.schedule.length > 0) {
+                        timetable.schedule.forEach(entry => {
+                            const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
+                            const entryElement = document.createElement('p');
+                            entryElement.textContent = entryText;
+                            timeCell.appendChild(entryElement);
+                        });
+                    } else {
+                        const noScheduleElement = document.createElement('p');
+                        noScheduleElement.textContent = 'No schedule for this day';
+                        timeCell.appendChild(noScheduleElement);
+                    }
+                    row.appendChild(timeCell);
 
-            row.appendChild(timeCell);
-
-            tableBody.appendChild(row);
-        } else {
-            const row = document.createElement('tr');
-            const noScheduleCell = document.createElement('td');
-            noScheduleCell.setAttribute('colspan', '3');
-            noScheduleCell.textContent = 'No schedule available';
-            row.appendChild(noScheduleCell);
-            tableBody.appendChild(row);
+                    tableBody.appendChild(row);
+                } else {
+                    const row = document.createElement('tr');
+                    const noScheduleCell = document.createElement('td');
+                    noScheduleCell.setAttribute('colspan', '3');
+                    noScheduleCell.textContent = 'No schedule available';
+                    row.appendChild(noScheduleCell);
+                    tableBody.appendChild(row);
+                }
+            }
         }
-    }
-}
 
-// Refresh the timetable every 1 minute
-setInterval(generateTimetable, 60000);
-generateTimetable(); // Generate timetable immediately on page load
+        // Function to update the current date and time
+        function updateDateTime() {
+            const options = { timeZone: 'Australia/Sydney' };
+            const currentDateTime = new Date().toLocaleString('en-AU', options);
+            const dateTimeElement = document.getElementById('currentDateTime');
+            dateTimeElement.textContent = currentDateTime;
+        }
+
+        // Refresh the timetable every 1 minute
+        setInterval(generateTimetable, 60000);
+        generateTimetable(); // Generate timetable immediately on page load
+
+        // Update the current date and time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Update immediately on page load
+    </script>
+</body>
+</html>
