@@ -174,11 +174,13 @@
             const currentHour = currentDate.getUTCHours() + 10; // AEST offset from UTC
             const currentDay = currentDate.getUTCDay(); // Current day of the week (Sunday: 0, Monday: 1, etc.)
 
-            // Determine the current week (Week A or Week B)
-            let currentWeek = 'Week A';
-            if (currentDay === 6 && currentHour >= 18) {
-                currentWeek = 'Week B';
-            }
+// Determine the current week (Week A or Week B) in sync with AEST
+const currentAESTHour = (currentHour + 10) % 24; // Adjust current hour to AEST
+let currentWeek = 'Week A';
+if ((currentDay === 6 && currentAESTHour >= 18) || currentDay === 0 || (currentDay === 1 && currentAESTHour < 6)) {
+    currentWeek = 'Week B';
+}
+
 
             // Determine the current day within the week
             let currentDayOfWeek = (currentDay + 1) % 7;
