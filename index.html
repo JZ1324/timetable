@@ -41,7 +41,7 @@
 
     <script>
         // Array of timetable details
-        const timetableDetails = [
+               const timetableDetails = [
             {
                 week: 'Week A',
                 day: 1,
@@ -170,14 +170,17 @@
             tableBody.innerHTML = '';
 
             // Get the current date and time in AEST (Australian Eastern Standard Time)
-            const currentDate = new Date();
-            const currentHour = (currentDate.getHours() + 24 - 10) % 24; // Convert UTC hour to AEST hour
-            const currentDay = (currentDate.getDay() + 6) % 7; // Convert UTC day to AEST day
+            const options = { timeZone: 'Australia/Sydney' };
+            const currentDate = new Date().toLocaleString('en-AU', options);
+            const currentDay = new Date(currentDate).getDay();
 
             // Determine the current week (Week A or Week B)
             let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
-            if (currentDay === 6 && currentHour >= 16) {
-                currentWeek = 'Week B';
+            if (currentDay === 6) {
+                const currentHour = new Date(currentDate).getHours();
+                if (currentHour >= 16) {
+                    currentWeek = 'Week B';
+                }
             }
 
             // Determine the current day within the week
