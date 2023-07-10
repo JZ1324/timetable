@@ -1,4 +1,4 @@
-     <!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 <head>
     <title>Workday Timetable</title>
@@ -40,12 +40,9 @@
     </table>
 
     <script>
-        // Array of weekdays
-        const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
         // Array of timetable details
         const timetableDetails = [
-              {
+                       {
                 week: 'Week A',
                 day: 1,
                 schedule: [
@@ -178,22 +175,20 @@
             const currentHour = currentDate.getUTCHours() + 10; // AEST offset from UTC
 
             // Determine the current week (Week A or Week B)
-            let currentWeek = currentDay === 0 && currentHour >= 18 ? 'Week A' : 'Week B';
-
-            // Determine the current day within the week
-            let currentDayOfWeek = currentDay;
-
-            // Check if current time is past 6 PM
-            if (currentHour >= 18) {
-                currentDayOfWeek = (currentDayOfWeek + 1) % 7; // Increment current day by 1 and cycle within the week
+            let currentWeek = 'Week A';
+            if (currentDay === 0 && currentHour >= 18) {
+                currentWeek = 'Week B';
             }
 
-            const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek + 1);
+            // Determine the current day within the week
+            let currentDayOfWeek = currentDay === 0 ? 7 : currentDay;
+
+            const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
             if (timetable) {
                 const row = document.createElement('tr');
 
                 const dayCell = document.createElement('td');
-                dayCell.textContent = currentDayOfWeek + 1;
+                dayCell.textContent = currentDayOfWeek;
                 row.appendChild(dayCell);
 
                 const weekCell = document.createElement('td');
