@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 <head>
     <title>Workday Timetable</title>
@@ -171,17 +171,17 @@
 
             // Get the current date and time in AEST (Australian Eastern Standard Time)
             const currentDate = new Date();
-            const currentDay = currentDate.getUTCDay(); // Current day of the week (Sunday: 0, Monday: 1, etc.)
             const currentHour = currentDate.getUTCHours() + 10; // AEST offset from UTC
+            const currentDay = currentDate.getUTCDay(); // Current day of the week (Sunday: 0, Monday: 1, etc.)
 
             // Determine the current week (Week A or Week B)
             let currentWeek = 'Week A';
-            if (currentDay === 0 && currentHour >= 18) {
+            if (currentDay === 6 && currentHour >= 18) {
                 currentWeek = 'Week B';
             }
 
             // Determine the current day within the week
-            let currentDayOfWeek = currentDay === 0 ? 7 : currentDay;
+            let currentDayOfWeek = (currentDay + 1) % 7;
 
             const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
             if (timetable) {
