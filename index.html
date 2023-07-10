@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html>
 <head>
     <title>Workday Timetable</title>
@@ -45,7 +45,7 @@
 
         // Array of timetable details
         const timetableDetails = [
-            {
+              {
                 week: 'Week A',
                 day: 1,
                 schedule: [
@@ -177,23 +177,23 @@
             const currentDay = currentDate.getUTCDay(); // Current day of the week (Sunday: 0, Monday: 1, etc.)
             const currentHour = currentDate.getUTCHours() + 10; // AEST offset from UTC
 
-
             // Determine the current week (Week A or Week B)
             let currentWeek = currentDay === 0 && currentHour >= 18 ? 'Week A' : 'Week B';
 
             // Determine the current day within the week
             let currentDayOfWeek = currentDay;
+
+            // Check if current time is past 6 PM
             if (currentHour >= 18) {
                 currentDayOfWeek = (currentDayOfWeek + 1) % 7; // Increment current day by 1 and cycle within the week
             }
 
-            // Generate timetable for 5 workdays
-            for (let i = 0; i < 5; i++) {
+            const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek + 1);
+            if (timetable) {
                 const row = document.createElement('tr');
 
                 const dayCell = document.createElement('td');
-                const dayNumber = (currentDayOfWeek + i) % 7 + 1;
-                dayCell.textContent = dayNumber;
+                dayCell.textContent = currentDayOfWeek + 1;
                 row.appendChild(dayCell);
 
                 const weekCell = document.createElement('td');
@@ -201,19 +201,21 @@
                 row.appendChild(weekCell);
 
                 const timeCell = document.createElement('td');
-                const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === dayNumber);
-                if (timetable) {
-                    timetable.schedule.forEach(entry => {
-                        const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
-                        const entryElement = document.createElement('p');
-                        entryElement.textContent = entryText;
-                        timeCell.appendChild(entryElement);
-                    });
-                } else {
-                    timeCell.textContent = 'No schedule available';
-                }
+                timetable.schedule.forEach(entry => {
+                    const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
+                    const entryElement = document.createElement('p');
+                    entryElement.textContent = entryText;
+                    timeCell.appendChild(entryElement);
+                });
                 row.appendChild(timeCell);
 
+                tableBody.appendChild(row);
+            } else {
+                const row = document.createElement('tr');
+                const noScheduleCell = document.createElement('td');
+                noScheduleCell.setAttribute('colspan', '3');
+                noScheduleCell.textContent = 'No schedule available';
+                row.appendChild(noScheduleCell);
                 tableBody.appendChild(row);
             }
         }
