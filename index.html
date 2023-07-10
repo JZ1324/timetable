@@ -1,25 +1,166 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
+<!DOCTYPE html>
+<html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-157295670-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <title>Workday Timetable</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
 
-  gtag('config', 'UA-157295670-1');
-</script>
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
 
-<meta charset="UTF-8">
-        <meta http-equiv="refresh" content="0; url=https://shattereddisk.github.io/rickroll/rickroll.mp4">
-        <script type="text/javascript">
-            window.location.href = "https://shattereddisk.github.io/rickroll/rickroll.mp4"
-        </script>
-        <title>Hi</title>
-    </head>
-    <body>
-        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
-        If you are not redirected automatically, follow this <a href='\https://shattereddisk.github.io/rickroll/rickroll.mp4/'>death</a>.
-    </body>
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Workday Timetable</h1>
+    <table id="timetable">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Week</th>
+                <th>Timings</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Placeholder rows -->
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Array of weekdays
+        const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+        // Array of timetable details
+        const timetableDetails = [
+            {
+                week: 'Week A',
+                day: 1,
+                schedule: [
+                    { period: 'Period 0', time: '8:35am–8:45am', subject: 'Assembly/Tute', location: '8.6/Cafe' },
+                    { period: 'Period 1', time: '8:50am–9:50am', subject: 'Languages', location: 'Your Location' },
+                    { period: 'Period 2', time: '9:55am–10:55am', subject: 'Esteam', location: 'FO4' },
+                    { period: 'Period 3', time: '11:25am–12:25pm', subject: 'English', location: 'LO8' },
+                    { period: 'Period 4', time: '12:30pm–1:30pm', subject: 'Sports', location: 'Sport Complex' },
+                    { period: 'Period 5', time: '2:25pm–3:25pm', subject: 'Maths', location: 'MO5' }
+                ]
+            },
+            {
+                week: 'Week A',
+                day: 2,
+                schedule: [
+                    { period: 'Period 0', time: '8:35am–8:45am', subject: 'Tute', location: '8.6' },
+                    { period: 'Period 1', time: '8:50am–9:50am', subject: 'Maths', location: 'MO5' },
+                    { period: 'Period 2', time: '9:55am–10:55am', subject: 'Science', location: 'SO2' },
+                    { period: 'Period 3', time: '11:25am–12:25pm', subject: 'Humanities', location: 'LO6' },
+                    { period: 'Period 4', time: '12:30pm–1:30pm', subject: 'Languages', location: 'your own classroom' },
+                    { period: 'Period 5', time: '2:25pm–3:25pm', subject: '7/8 Sport', location: '' }
+                ]
+            },
+            {
+                week: 'Week A',
+                day: 3,
+                schedule: [
+                    { period: 'Period 0', time: '8:35am–8:45am', subject: 'Tute', location: '' },
+                    { period: 'Period 1', time: '8:50am–9:50am', subject: 'Art', location: 'FO3' },
+                    { period: 'Period 2', time: '9:55am–10:55am', subject: 'Maths', location: 'MO6' },
+                    { period: 'Period 3', time: '11:25am–12:25pm', subject: 'English', location: 'LO6' },
+                    { period: 'Period 4', time: '12:30pm–1:30pm', subject: 'Science', location: 'SO5' },
+                    { period: 'Period 5', time: '2:25pm–3:25pm', subject: 'Health', location: 'LO6' }
+                ]
+            },
+            {
+                week: 'Week A',
+                day: 4,
+                schedule: [
+                    { period: 'Period 0', time: '8:35am–8:45am', subject: 'Assembly/Tute', location: '8.6' },
+                    { period: 'Period 1', time: '8:50am–9:50am', subject: 'VCD', location: 'FO3' },
+                    { period: 'Period 2', time: '9:55am–10:55am', subject: 'Science', location: 'SO2' },
+                    { period: 'Period 3', time: '11:25am–12:25pm', subject: 'Humanities', location: 'LO6' },
+                    { period: 'Period 4', time: '12:30pm–1:30pm', subject: 'English', location: 'LO6' },
+                    { period: 'Period 5', time: '2:25pm–3:25pm', subject: 'Esteam', location: 'FO4' }
+                ]
+            },
+            {
+                week: 'Week A',
+                day: 5,
+                schedule: [
+                    { period: 'Period 0', time: '8:35am–8:45am', subject: 'Assembly/Tute', location: '8.6' },
+                    { period: 'Period 1', time: '8:50am–9:50am', subject: 'Sport', location: 'Sport Complex' },
+                    { period: 'Period 2', time: '9:55am–10:55am', subject: 'Humanities', location: 'LO6' },
+                    { period: 'Period 3', time: '11:25am–12:25pm', subject: 'Drama', location: 'DO2' },
+                    { period: 'Period 4', time: '12:30pm–1:30pm', subject: 'English', location: 'LO6' },
+                    { period: 'Period 5', time: '2:25pm–3:25pm', subject: 'Music', location: 'PO2' }
+                ]
+            }
+        ];
+
+        // Function to generate timetable
+        function generateTimetable() {
+            const tableBody = document.querySelector('#timetable tbody');
+            tableBody.innerHTML = '';
+
+            // Get the current date and time in AEST (Australian Eastern Standard Time)
+            const currentDate = new Date();
+            const currentDay = currentDate.getUTCDay(); // Current day of the week (Sunday: 0, Monday: 1, etc.)
+            const currentHour = currentDate.getUTCHours() + 10; // AEST offset from UTC
+
+
+            // Determine the current week (Week A or Week B)
+            let currentWeek = currentDay === 0 && currentHour >= 18 ? 'Week A' : 'Week B';
+
+            // Determine the current day within the week
+            let currentDayOfWeek = currentDay;
+            if (currentHour >= 18) {
+                currentDayOfWeek = (currentDayOfWeek + 1) % 7; // Increment current day by 1 and cycle within the week
+            }
+
+            // Generate timetable for 5 workdays
+            for (let i = 0; i < 5; i++) {
+                const row = document.createElement('tr');
+
+                const dayCell = document.createElement('td');
+                const dayNumber = (currentDayOfWeek + i) % 7 + 1;
+                dayCell.textContent = dayNumber;
+                row.appendChild(dayCell);
+
+                const weekCell = document.createElement('td');
+                weekCell.textContent = currentWeek;
+                row.appendChild(weekCell);
+
+                const timeCell = document.createElement('td');
+                const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === dayNumber);
+                if (timetable) {
+                    timetable.schedule.forEach(entry => {
+                        const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
+                        const entryElement = document.createElement('p');
+                        entryElement.textContent = entryText;
+                        timeCell.appendChild(entryElement);
+                    });
+                } else {
+                    timeCell.textContent = 'No schedule available';
+                }
+                row.appendChild(timeCell);
+
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Refresh the timetable every 1 minute
+        setInterval(generateTimetable, 60000);
+        generateTimetable(); // Generate timetable immediately on page load
+    </script>
+</body>
 </html>
