@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+       <!DOCTYPE html>
 <html>
 <head>
     <title>Workday Timetable</title>
@@ -40,7 +40,7 @@
     </table>
 
     <script>
-        // Array of timetable details
+    // Array of timetable details
                const timetableDetails = [
             {
                 week: 'Week A',
@@ -172,15 +172,14 @@
             // Get the current date and time in AEST (Australian Eastern Standard Time)
             const options = { timeZone: 'Australia/Sydney' };
             const currentDate = new Date().toLocaleString('en-AU', options);
+            const currentHour = new Date(currentDate).getHours();
             const currentDay = new Date(currentDate).getDay();
 
             // Determine the current week (Week A or Week B)
             let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
-            if (currentDay === 6) {
-                const currentHour = new Date(currentDate).getHours();
-                if (currentHour >= 16) {
-                    currentWeek = 'Week B';
-                }
+
+            if (currentDay === 1 && currentHour >= 18) {
+                currentWeek = 'Week B';
             }
 
             // Determine the current day within the week
