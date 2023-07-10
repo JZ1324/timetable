@@ -167,60 +167,57 @@
 
 
 
-        // Function to generate timetable
-        function generateTimetable() {
-            const tableBody = document.querySelector('#timetable tbody');
-            tableBody.innerHTML = '';
+    // Function to generate timetable
+function generateTimetable() {
+    const tableBody = document.querySelector('#timetable tbody');
+    tableBody.innerHTML = '';
 
-            // Get the current date and time in AEST (Australian Eastern Standard Time)
-            const currentDate = new Date();
-            const currentDay = (currentDate.getUTCDay() + 6) % 7; // Convert UTC day to AEST day
-            const currentHour = (currentDate.getHours() + 24 - 10) % 24; // Convert UTC hour to AEST hour
+    // Get the current date and time in AEST (Australian Eastern Standard Time)
+    const currentDate = new Date();
+    const currentHour = (currentDate.getHours() + 24 - 10) % 24; // Convert UTC hour to AEST hour
+    const currentDay = (currentDate.getDay() + 6) % 7; // Convert UTC day to AEST day
 
-            // Determine the current week (Week A or Week B)
-            let currentWeek = 'Week A';
-            if (currentDay === 6 && currentHour >= 16) {
-                currentWeek = 'Week B';
-            }
+    // Determine the current week (Week A or Week B)
+    let currentWeek = (currentDay >= 1 && currentDay <= 5) ? 'Week A' : 'Week B';
+    if (currentDay === 6 && currentHour >= 16) {
+        currentWeek = 'Week B';
+    }
 
-            // Determine the current day within the week
-            let currentDayOfWeek = (currentDay === 0 ? 7 : currentDay);
+    // Determine the current day within the week
+    let currentDayOfWeek = (currentDay === 0 ? 7 : currentDay);
 
-            const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
-            if (timetable) {
-                const row = document.createElement('tr');
+    const timetable = timetableDetails.find(t => t.week === currentWeek && t.day === currentDayOfWeek);
+    if (timetable) {
+        const row = document.createElement('tr');
 
-                const dayCell = document.createElement('td');
-                dayCell.textContent = currentDayOfWeek;
-                row.appendChild(dayCell);
+        const dayCell = document.createElement('td');
+        dayCell.textContent = currentDayOfWeek;
+        row.appendChild(dayCell);
 
-                const weekCell = document.createElement('td');
-                weekCell.textContent = currentWeek;
-                row.appendChild(weekCell);
+        const weekCell = document.createElement('td');
+        weekCell.textContent = currentWeek;
+        row.appendChild(weekCell);
 
-                const timeCell = document.createElement('td');
-                timetable.schedule.forEach(entry => {
-                    const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
-                    const entryElement = document.createElement('p');
-                    entryElement.textContent = entryText;
-                    timeCell.appendChild(entryElement);
-                });
-                row.appendChild(timeCell);
+        const timeCell = document.createElement('td');
+        timetable.schedule.forEach(entry => {
+            const entryText = `${entry.period}: ${entry.subject} at ${entry.location}`;
+            const entryElement = document.createElement('p');
+            entryElement.textContent = entryText;
+            timeCell.appendChild(entryElement);
+        });
+        row.appendChild(timeCell);
 
-                tableBody.appendChild(row);
-            } else {
-                const row = document.createElement('tr');
-                const noScheduleCell = document.createElement('td');
-                noScheduleCell.setAttribute('colspan', '3');
-                noScheduleCell.textContent = 'No schedule available';
-                row.appendChild(noScheduleCell);
-                tableBody.appendChild(row);
-            }
-        }
+        tableBody.appendChild(row);
+    } else {
+        const row = document.createElement('tr');
+        const noScheduleCell = document.createElement('td');
+        noScheduleCell.setAttribute('colspan', '3');
+        noScheduleCell.textContent = 'No schedule available';
+        row.appendChild(noScheduleCell);
+        tableBody.appendChild(row);
+    }
+}
 
-        // Refresh the timetable every 1 minute
-        setInterval(generateTimetable, 60000);
-        generateTimetable(); // Generate timetable immediately on page load
-    </script>
-</body>
-</html>
+// Refresh the timetable every 1 minute
+setInterval(generateTimetable, 60000);
+generateTimetable(); // Generate timetable immediately on page load
